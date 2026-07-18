@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gloeus motion harness</title>
+<!-- mirror theme.liquid: mark JS alive before paint -->
+<script>document.documentElement.classList.add('gloeus-js');</script>
+<link rel="stylesheet" href="ASSETS/gloeus-tokens.css">
+<link rel="stylesheet" href="ASSETS/gloeus-motion.css">
+<style>
+  /* minimal color-scheme vars so brand utilities resolve in the harness */
+  body{ --color-background:251 248 247; --color-foreground:26 20 22; background:#fbf8f7; color:#1a1416; margin:0; font-family:system-ui,sans-serif; }
+  .pad{ height: 120vh; }
+  .g-container{ padding: 2rem; }
+</style>
+DELAYSLOT
+</head>
+<body class="gradient">
+  <!-- HERO -->
+  <section class="g-field" style="min-height:90vh;position:relative">
+    <div class="g-petals" data-count="10" aria-hidden="true"></div>
+    <div class="g-container">
+      <p class="g-eyebrow g-enter g-up" style="--g-i:0">Gloeus · UAE</p>
+      <h1 class="g-display">
+        <span class="g-mask"><span class="g-mask-i" style="--g-i:1">Smooth skin,</span></span>
+        <span class="g-mask"><span class="g-mask-i" style="--g-i:2"><em>in minutes.</em></span></span>
+      </h1>
+      <p class="g-lead g-enter g-up" style="--g-i:3">Pain-free skin in 3–5 minutes.</p>
+      <div class="g-enter g-up" style="--g-i:4"><a class="g-btn g-btn--rose g-magnetic" href="#">Shop OUHOE</a></div>
+      <div class="g-enter g-scale g-cine" style="--g-i:2">
+        <div class="g-bottle-parallax" data-parallax="0.16"><div class="g-bottle-float">
+          <div style="width:180px;height:320px;background:linear-gradient(#f2a7bc,#c96f86);border-radius:40% 40% 46% 46%/6% 6% 12% 12%;margin-top:1rem"></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS reveals -->
+  <section class="g-container g-section">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:1rem">
+      <article class="g-card g-reveal g-up g-magnetic" style="--g-i:1"><h3>Pain-Free</h3><p>No razors.</p></article>
+      <article class="g-card g-reveal g-up g-magnetic" style="--g-i:2"><h3>Fast</h3><p>3–5 min.</p></article>
+      <article class="g-card g-reveal g-up g-magnetic" style="--g-i:3"><h3>Skin-Safe</h3><p>All skin types.</p></article>
+      <article class="g-card g-reveal g-up g-magnetic" style="--g-i:4"><h3>Long-Lasting</h3><p>Weeks.</p></article>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS scrub -->
+  <section class="g-hiw" style="--steps:3;--tx:66.666%;min-height:calc(3 * 100vh)">
+    <div class="g-hiw-sticky g-field">
+      <div class="g-container">
+        <div class="g-hiw-track">
+          <div class="g-hiw-panel"><h3 class="g-step-num">01</h3><h3>Apply</h3><p>Spray evenly.</p></div>
+          <div class="g-hiw-panel"><h3 class="g-step-num">02</h3><h3>Wait</h3><p>3–5 minutes.</p></div>
+          <div class="g-hiw-panel"><h3 class="g-step-num">03</h3><h3>Wipe</h3><p>Smooth skin.</p></div>
+        </div>
+        <div class="g-hiw-dots"><span class="g-hiw-dot on"></span><span class="g-hiw-dot"></span><span class="g-hiw-dot"></span></div>
+        <div class="g-hiw-progress"><i></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFER shimmer -->
+  <section class="g-container g-section">
+    <div class="g-shimmer g-reveal g-scale" style="background:linear-gradient(135deg,#c96f86,#f2a7bc);color:#fff;padding:3rem;border-radius:28px;text-align:center">
+      <h2>AED 39.99 — Save AED 25</h2>
+    </div>
+  </section>
+
+  <!-- FAQ accordion -->
+  <section class="g-container g-section" id="faq">
+    <div class="gloeus-faq__item" style="border:1px solid #ddd;border-radius:18px;overflow:hidden">
+      <input type="checkbox" class="gloeus-faq__toggle visually-hidden" id="faq-1">
+      <label class="gloeus-faq__q" for="faq-1" style="display:flex;justify-content:space-between;padding:1rem;cursor:pointer">
+        <span>How long does it take?</span><span class="gloeus-faq__mark"></span>
+      </label>
+      <div class="gloeus-faq__body"><div class="gloeus-faq__inner"><div class="gloeus-faq__a" style="padding:0 1rem 1rem">3–5 minutes.</div></div></div>
+    </div>
+    <style>
+      #faq .gloeus-faq__body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+      #faq .gloeus-faq__toggle:checked ~ .gloeus-faq__body{grid-template-rows:1fr}
+      #faq .gloeus-faq__inner{overflow:hidden}
+      .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    </style>
+  </section>
+
+  <!-- STICKY ATC -->
+  <div id="gloeus-atc-anchor" style="height:1px"></div>
+  <div class="g-sticky-atc" data-sticky-atc>
+    <div class="g-sticky-meta"><span class="g-sticky-title">OUHOE Spray</span><span class="g-sticky-price">AED 39.99</span></div>
+    <a href="#" data-sticky-add class="g-btn g-btn--rose">Add to cart</a>
+  </div>
+  <!-- a real product-form target for the sticky-add click test -->
+  <product-form><form><button name="add" type="submit" id="realadd">Add to cart</button></form></product-form>
+
+  <div class="pad"></div>
+
+  <script defer src="ASSETS/gloeus-motion.js"></script>
+  <script>
+    (function () {
+      setTimeout(function () {
+        if (!window.__boot) { document.documentElement.classList.add('gloeus-in','gloeus-allin'); }
+      }, 1600);
+    })();
+  </script>
+</body>
+</html>

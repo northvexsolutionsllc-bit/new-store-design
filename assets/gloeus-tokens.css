@@ -70,8 +70,9 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgb(var(--color-foreground, 26 20 22));
-  opacity: 0.72;
+  /* Muted via color-alpha, NOT box opacity — keeps animated elements resting at opacity:1
+     so the stuck-reveal guard stays meaningful. */
+  color: rgba(var(--color-foreground, 26 20 22), 0.72);
 }
 
 .g-display {
