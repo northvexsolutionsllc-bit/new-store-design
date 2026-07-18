@@ -69,6 +69,47 @@
         "padding_bottom": 12
       }
     },
+    "sticky_atc": {
+      "type": "gloeus-sticky-atc",
+      "settings": {
+        "button_label": "Add to cart"
+      }
+    },
+    "product_benefits": {
+      "type": "gloeus-benefits",
+      "blocks": {
+        "b1": { "type": "benefit", "settings": { "icon": "✿", "title": "Pain-Free Formula", "text": "No waxing, no razors, no pain. Just smooth skin." } },
+        "b2": { "type": "benefit", "settings": { "icon": "✦", "title": "Fast Results", "text": "Visible results in just 3–5 minutes." } },
+        "b3": { "type": "benefit", "settings": { "icon": "❀", "title": "Skin-Safe", "text": "Gentle formula safe for all skin types." } },
+        "b4": { "type": "benefit", "settings": { "icon": "✧", "title": "Long-Lasting", "text": "Smooth skin for weeks, not days." } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
+      "settings": {
+        "eyebrow": "Why women love OUHOE",
+        "heading": "Every reason to switch.",
+        "subheading": "Trusted by thousands of women across the UAE.",
+        "color_scheme": "scheme-2",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "product_testimonials": {
+      "type": "gloeus-testimonials",
+      "blocks": {
+        "t1": { "type": "quote", "settings": { "quote": "This spray is a game changer! No more painful waxing sessions. My skin feels so smooth and it lasts for weeks!", "name": "Sarah M.", "city": "Dubai" } },
+        "t2": { "type": "quote", "settings": { "quote": "I was skeptical at first, but this product really works! It's gentle on my sensitive skin and the results are amazing.", "name": "Fatima A.", "city": "Abu Dhabi" } },
+        "t3": { "type": "quote", "settings": { "quote": "Best purchase ever! Quick delivery, easy to use, and the results speak for themselves. Highly recommend!", "name": "Layla K.", "city": "Sharjah" } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": {
+        "eyebrow": "What our customers say",
+        "heading": "Loved across the Emirates.",
+        "speed": 40,
+        "color_scheme": "scheme-1",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
     "disclosures": {
       "type": "disclosures",
       "settings": {
@@ -97,6 +138,9 @@
   },
   "order": [
     "main",
+    "sticky_atc",
+    "product_benefits",
+    "product_testimonials",
     "disclosures",
     "related-products"
   ]

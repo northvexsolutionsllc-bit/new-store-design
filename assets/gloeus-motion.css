@@ -1,0 +1,220 @@
+/* ============================================================================
+   GLOEUS · Motion system
+   ----------------------------------------------------------------------------
+   GATING MODEL (the scar-tested rules):
+   - `html.gloeus-js` is added by a tiny inline head script BEFORE first paint,
+     ONLY when JS runs. If JS is off (or the engine file 404s) the class never
+     appears, every hidden state is inert, and all content renders normally.
+   - Every JS-gated hidden state is scoped inside :where(...) so it can never
+     out-specify the visible/base rule (Rule 3).
+   - ENTRANCE elements (.g-enter) all release together the instant `.gloeus-in`
+     is added — by ONE authority in gloeus-motion.js, or by the 1600ms inline
+     fallback if the engine never boots (Rule 2).
+   - SCROLL reveals (.g-reveal) release per-element via `.is-in`, or globally via
+     `.gloeus-allin` (fallback) so a dead engine can never strand them.
+   - Entrance/scroll effects are opacity + transform ONLY. No animated blur or
+     filter on content (Rule 5).
+   ========================================================================== */
+
+/* ---------- Entrance gate (single authority: .gloeus-in) ------------------ */
+.g-enter {
+  transition:
+    opacity var(--g-dur) var(--g-ease),
+    transform var(--g-dur) var(--g-ease);
+  transition-delay: calc(var(--g-i, 0) * 80ms);
+  will-change: opacity, transform;
+}
+:where(html.gloeus-js:not(.gloeus-in)) .g-enter { opacity: 0; }
+:where(html.gloeus-js:not(.gloeus-in)) .g-enter.g-up { transform: translateY(2.6rem); }
+:where(html.gloeus-js:not(.gloeus-in)) .g-enter.g-down { transform: translateY(-2rem); }
+:where(html.gloeus-js:not(.gloeus-in)) .g-enter.g-left { transform: translateX(-2.4rem); }
+:where(html.gloeus-js:not(.gloeus-in)) .g-enter.g-right { transform: translateX(2.4rem); }
+:where(html.gloeus-js:not(.gloeus-in)) .g-enter.g-scale { transform: scale(0.92); }
+
+/* Masked line reveal (Cinematic hero). Transform only, no blur. */
+.g-mask { overflow: hidden; display: block; }
+.g-mask-i {
+  display: block;
+  transition: transform var(--g-dur-slow) var(--g-ease-cine);
+  transition-delay: calc(var(--g-i, 0) * 90ms);
+  will-change: transform;
+}
+:where(html.gloeus-js:not(.gloeus-in)) .g-mask-i { transform: translateY(115%); }
+
+/* ---------- Scroll reveals (per-element .is-in / global .gloeus-allin) ----- */
+.g-reveal {
+  transition:
+    opacity var(--g-dur) var(--g-ease),
+    transform var(--g-dur) var(--g-ease);
+  transition-delay: calc(var(--g-i, 0) * 80ms);
+  will-change: opacity, transform;
+}
+:where(html.gloeus-js:not(.gloeus-allin)) .g-reveal:not(.is-in) { opacity: 0; }
+:where(html.gloeus-js:not(.gloeus-allin)) .g-reveal:not(.is-in).g-up { transform: translateY(2.6rem); }
+:where(html.gloeus-js:not(.gloeus-allin)) .g-reveal:not(.is-in).g-left { transform: translateX(-2.4rem); }
+:where(html.gloeus-js:not(.gloeus-allin)) .g-reveal:not(.is-in).g-right { transform: translateX(2.4rem); }
+:where(html.gloeus-js:not(.gloeus-allin)) .g-reveal:not(.is-in).g-scale { transform: scale(0.94); }
+
+/* Cinematic variant: heavier travel + longer, expo easing */
+.g-reveal.g-cine,
+.g-enter.g-cine { transition-duration: var(--g-dur-slow); transition-timing-function: var(--g-ease-cine); }
+:where(html.gloeus-js:not(.gloeus-allin)) .g-reveal.g-cine:not(.is-in).g-up { transform: translateY(4.4rem); }
+
+/* ---------- Floating bottle: JS parallax on wrapper, CSS idle float inner -- */
+.g-bottle-parallax { will-change: transform; }
+.g-bottle-float {
+  animation: g-float 7s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes g-float {
+  from { transform: translateY(-1.2%) rotate(-2.2deg); }
+  to   { transform: translateY(1.6%) rotate(2.4deg); }
+}
+
+/* ---------- Petal / particle drift (transform + opacity only) ------------- */
+.g-petals { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.g-petal {
+  position: absolute;
+  top: -8%;
+  width: var(--s, 14px);
+  height: var(--s, 14px);
+  color: var(--g-blush);
+  opacity: 0;
+  animation: g-drift var(--d, 14s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+@keyframes g-drift {
+  0%   { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translate3d(var(--x, 30px), 112vh, 0) rotate(320deg); }
+}
+
+/* ---------- Marquee (testimonials / trust strip) -------------------------- */
+.g-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.g-marquee-track { display: flex; width: max-content; gap: var(--g-gap); animation: g-marquee var(--speed, 38s) linear infinite; will-change: transform; }
+.g-marquee:hover .g-marquee-track { animation-play-state: paused; }
+@keyframes g-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------- Scroll-scrubbed, pinned How-It-Works -------------------------- */
+.g-hiw { position: relative; }
+.g-hiw-sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+}
+.g-hiw-track {
+  display: flex;
+  width: 100%;
+  /* --tx = (steps-1)/steps * 100%, set per-section from block count */
+  transform: translateX(calc(var(--p, 0) * -1 * var(--tx, 66.666%)));
+  transition: transform 0.12s linear;
+}
+.g-hiw-panel { flex: 0 0 100%; min-width: 100%; }
+.g-hiw-progress { height: 3px; background: rgba(var(--color-foreground, 26 20 22), 0.12); border-radius: 999px; overflow: hidden; }
+.g-hiw-progress > i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--g-rose-deep); transition: width 0.12s linear; }
+.g-hiw-dots { display: flex; gap: 0.6rem; }
+.g-hiw-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(var(--color-foreground, 26 20 22), 0.2); transition: background-color 0.25s ease, transform 0.25s ease; }
+.g-hiw-dot.on { background: var(--g-rose-deep); transform: scale(1.35); }
+
+/* ---------- Sticky mobile ATC bar (small fixed chrome; safe-area) --------- */
+.g-sticky-atc {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem clamp(0.8rem, 4vw, 1.2rem);
+  padding-bottom: calc(0.7rem + env(safe-area-inset-bottom, 0px));
+  background: rgb(var(--color-background, 251 248 247)); /* solid fallback */
+  border-top: 1px solid rgba(var(--color-foreground, 26 20 22), 0.1);
+  transform: translateY(110%);
+  transition: transform 0.4s var(--g-ease);
+  box-shadow: 0 -12px 40px -24px rgba(201, 111, 134, 0.6);
+}
+.g-sticky-atc.is-visible { transform: translateY(0); }
+/* backdrop-filter ONLY on pointer devices, never animated, solid fallback kept */
+@media (hover: hover) {
+  @supports ((-webkit-backdrop-filter: blur(12px)) or (backdrop-filter: blur(12px))) {
+    .g-sticky-atc {
+      background: rgba(var(--color-background, 251 248 247), 0.72);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+  }
+}
+.g-sticky-atc .g-sticky-meta { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.g-sticky-atc .g-sticky-title { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-sticky-atc .g-sticky-price { font-variant-numeric: tabular-nums; color: var(--g-rose-deep); font-weight: 600; }
+.g-sticky-atc .g-btn { margin-left: auto; flex: 0 0 auto; padding-block: 0.8rem; }
+@media (min-width: 990px) { .g-sticky-atc { display: none; } }
+
+/* ---------- Magnetic hover (pointer only; JS sets --mx/--my) -------------- */
+.g-magnetic { transition: transform 0.25s var(--g-ease); }
+@media (hover: hover) and (pointer: fine) {
+  .g-magnetic.g-mag-active { transform: translate(var(--mx, 0), var(--my, 0)); }
+}
+
+/* Shimmer sweep for the offer band (transform only, no blur) */
+.g-shimmer { position: relative; overflow: hidden; }
+.g-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.45) 50%, transparent 62%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.g-shimmer.is-in::after { animation: g-sweep 2.4s ease 0.3s; }
+@keyframes g-sweep { to { transform: translateX(120%); } }
+
+/* ============================================================================
+   CART DRAWER polish (Rule 10) — motion only, Dawn's cart logic untouched.
+   ========================================================================== */
+cart-drawer .drawer__inner { transition: transform 0.5s var(--g-ease-silk), opacity 0.4s ease; }
+cart-drawer:not(.active) .drawer__inner { transform: translateX(2.5rem); opacity: 0; }
+cart-drawer.active .drawer__inner { transform: none; opacity: 1; }
+cart-drawer .cart-item {
+  transition: background-color 0.25s ease, opacity 0.3s ease, transform 0.3s var(--g-ease);
+}
+cart-drawer .cart-item:hover { background-color: rgba(var(--color-foreground, 26 20 22), 0.03); }
+@media (prefers-reduced-motion: reduce) {
+  cart-drawer .drawer__inner,
+  cart-drawer .cart-item { transition: none; }
+  cart-drawer:not(.active) .drawer__inner { transform: none; }
+}
+
+/* ============================================================================
+   TOUCH PARITY — neutralize hover-only effects (Rule 6)
+   ========================================================================== */
+@media (hover: none) {
+  .g-btn:hover { transform: none; box-shadow: none; }
+  .g-marquee:hover .g-marquee-track { animation-play-state: running; }
+  .g-magnetic { transform: none !important; }
+}
+* { touch-action: manipulation; }
+
+/* ============================================================================
+   REDUCED MOTION — content fully readable, motion collapsed (Rule 7)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :where(html.gloeus-js) .g-enter,
+  :where(html.gloeus-js) .g-reveal,
+  :where(html.gloeus-js) .g-mask-i {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .g-bottle-float,
+  .g-petal,
+  .g-marquee-track { animation: none !important; }
+  .g-petals { display: none; }
+  .g-hiw-track { transition: none; }
+  .g-shimmer::after { display: none; }
+  .g-sticky-atc { transition: none; }
+}
