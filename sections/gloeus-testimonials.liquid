@@ -1,0 +1,73 @@
+{%- comment -%} GLOEUS · Testimonials — auto-advancing marquee (pauses on hover, runs on touch). {%- endcomment -%}
+{{ 'gloeus-tokens.css' | asset_url | stylesheet_tag }}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="g-section gloeus-tm" style="--pt:{{ section.settings.padding_top }}px;--pb:{{ section.settings.padding_bottom }}px;">
+    <header class="g-container gloeus-tm__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="g-eyebrow g-reveal g-up">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="g-h2 g-reveal g-up" style="--g-i:1">{{ section.settings.heading }}</h2>{%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="g-marquee gloeus-tm__marquee g-reveal" style="--speed:{{ section.settings.speed }}s">
+        <div class="g-marquee-track">
+          {%- for i in (1..2) -%}
+            {%- for block in section.blocks -%}
+              <figure class="g-card gloeus-tm__card" {{ block.shopify_attributes }} {% if i == 2 %}aria-hidden="true"{% endif %}>
+                <div class="gloeus-tm__stars" aria-hidden="true">★★★★★</div>
+                <blockquote class="gloeus-tm__quote">{{ block.settings.quote }}</blockquote>
+                <figcaption class="gloeus-tm__by">
+                  <span class="gloeus-tm__name">{{ block.settings.name }}</span>
+                  {%- if block.settings.city != blank -%}<span class="gloeus-tm__city">{{ block.settings.city }}</span>{%- endif -%}
+                </figcaption>
+              </figure>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} .g-section { padding-block: var(--pt) var(--pb); }
+  #shopify-section-{{ section.id }} .gloeus-tm__head { max-width: 46rem; margin-bottom: clamp(1.6rem, 4vw, 2.6rem); }
+  #shopify-section-{{ section.id }} .gloeus-tm__head .g-h2 { margin-top: 0.3em; }
+  #shopify-section-{{ section.id }} .gloeus-tm__card { flex: 0 0 min(88vw, 26rem); display: flex; flex-direction: column; gap: 0.7rem; }
+  #shopify-section-{{ section.id }} .gloeus-tm__stars { color: var(--g-rose); letter-spacing: 0.15em; }
+  #shopify-section-{{ section.id }} .gloeus-tm__quote { font-family: var(--font-heading-family); font-size: 1.25rem; line-height: 1.4; margin: 0; }
+  #shopify-section-{{ section.id }} .gloeus-tm__by { display: flex; gap: 0.5rem; align-items: baseline; margin-top: auto; }
+  #shopify-section-{{ section.id }} .gloeus-tm__name { font-weight: 600; }
+  #shopify-section-{{ section.id }} .gloeus-tm__city { font-size: 0.85rem; opacity: 0.6; }
+</style>
+
+{% schema %}
+{
+  "name": "Gloeus Testimonials",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What our customers say" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Loved across the Emirates." },
+    { "type": "range", "id": "speed", "label": "Marquee duration (s)", "min": 18, "max": 80, "step": 2, "default": 40 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    { "type": "quote", "name": "Testimonial", "settings": [
+      { "type": "textarea", "id": "quote", "label": "Quote" },
+      { "type": "text", "id": "name", "label": "Name" },
+      { "type": "text", "id": "city", "label": "City" }
+    ] }
+  ],
+  "presets": [ {
+    "name": "Gloeus Testimonials",
+    "blocks": [
+      { "type": "quote", "settings": { "quote": "This spray is a game changer! No more painful waxing sessions. My skin feels so smooth and it lasts for weeks!", "name": "Sarah M.", "city": "Dubai" } },
+      { "type": "quote", "settings": { "quote": "I was skeptical at first, but this product really works! It's gentle on my sensitive skin and the results are amazing.", "name": "Fatima A.", "city": "Abu Dhabi" } },
+      { "type": "quote", "settings": { "quote": "Best purchase ever! Quick delivery, easy to use, and the results speak for themselves. Highly recommend!", "name": "Layla K.", "city": "Sharjah" } }
+    ]
+  } ]
+}
+{% endschema %}

@@ -1,75 +1,153 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
+    "hero": {
+      "type": "gloeus-hero",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "motion": "cinematic",
+        "eyebrow": "Gloeus · UAE",
+        "heading": "Smooth skin,\nin minutes.",
+        "subheading": "Experience smooth, pain-free skin in just 3–5 minutes with the OUHOE Hair Removal Spray — no waxing, no razors, no pain.",
+        "parallax_depth": 16,
+        "button_label": "Shop OUHOE",
+        "button_link": "shopify://products/ouhoe-hair-removal-spray",
+        "button_label_2": "How it works",
+        "button_link_2": "#gloeus-how",
+        "note": "AED 39.99 · Free shipping across the UAE",
+        "show_petals": true,
+        "petal_count": 12,
+        "show_scroll_hint": true,
+        "scroll_label": "Scroll",
+        "color_scheme": "scheme-1",
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "benefits": {
+      "type": "gloeus-benefits",
+      "blocks": {
+        "b1": { "type": "benefit", "settings": { "icon": "✿", "title": "Pain-Free Formula", "text": "No waxing, no razors, no pain. Just smooth skin." } },
+        "b2": { "type": "benefit", "settings": { "icon": "✦", "title": "Fast Results", "text": "Visible results in just 3–5 minutes." } },
+        "b3": { "type": "benefit", "settings": { "icon": "❀", "title": "Skin-Safe", "text": "Gentle formula safe for all skin types." } },
+        "b4": { "type": "benefit", "settings": { "icon": "✧", "title": "Long-Lasting", "text": "Smooth skin for weeks, not days." } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
+        "eyebrow": "Why women love OUHOE",
+        "heading": "Beauty that respects your skin.",
+        "subheading": "Trusted by thousands of women across the UAE.",
         "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "how": {
+      "type": "gloeus-how-it-works",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "Apply", "text": "Apply the spray evenly on the desired area.", "glyph": "✿" } },
+        "s2": { "type": "step", "settings": { "title": "Wait 3–5 min", "text": "Let the formula work its magic.", "glyph": "✦" } },
+        "s3": { "type": "step", "settings": { "title": "Wipe", "text": "Wipe away for smooth, hair-free skin.", "glyph": "❀" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {
+        "eyebrow": "How it works",
+        "heading": "Three minutes to smooth.",
+        "color_scheme": "scheme-2"
+      }
+    },
+    "feature": {
+      "type": "gloeus-feature-product",
+      "blocks": {
+        "c1": { "type": "chip", "settings": { "label": "Pain-free" } },
+        "c2": { "type": "chip", "settings": { "label": "3–5 minute results" } },
+        "c3": { "type": "chip", "settings": { "label": "All skin types" } },
+        "c4": { "type": "chip", "settings": { "label": "120ml / 4 fl.oz" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": {
+        "product": "ouhoe-hair-removal-spray",
+        "eyebrow": "✨ Best seller",
+        "heading": "OUHOE Hair Removal Spray",
+        "text": "Our best-selling spray depilation — smooth, soft, confidently hair-free skin in minutes.",
+        "color_scheme": "scheme-1",
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "testimonials": {
+      "type": "gloeus-testimonials",
+      "blocks": {
+        "t1": { "type": "quote", "settings": { "quote": "This spray is a game changer! No more painful waxing sessions. My skin feels so smooth and it lasts for weeks!", "name": "Sarah M.", "city": "Dubai" } },
+        "t2": { "type": "quote", "settings": { "quote": "I was skeptical at first, but this product really works! It's gentle on my sensitive skin and the results are amazing.", "name": "Fatima A.", "city": "Abu Dhabi" } },
+        "t3": { "type": "quote", "settings": { "quote": "Best purchase ever! Quick delivery, easy to use, and the results speak for themselves. Highly recommend!", "name": "Layla K.", "city": "Sharjah" } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": {
+        "eyebrow": "What our customers say",
+        "heading": "Loved across the Emirates.",
+        "speed": 40,
+        "color_scheme": "scheme-2",
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "offer": {
+      "type": "gloeus-offer-band",
+      "settings": {
+        "eyebrow": "⏰ Limited time offer",
+        "heading": "Don't miss out.",
+        "price": "AED 39.99",
+        "save": "Save AED 25",
+        "subtext": "Free shipping across the UAE · Cash on delivery available",
+        "button_label": "Claim the offer",
+        "button_link": "shopify://products/ouhoe-hair-removal-spray",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "faq": {
+      "type": "gloeus-faq",
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "question": "How long does it take to work?", "answer": "<p>Most areas are smooth in just 3–5 minutes. Apply evenly, wait, then wipe away.</p>" } },
+        "q2": { "type": "qa", "settings": { "question": "Is it painful?", "answer": "<p>No waxing and no razors — the spray is designed for a pain-free experience.</p>" } },
+        "q3": { "type": "qa", "settings": { "question": "Which areas can I use it on?", "answer": "<p>It's designed for common body areas such as legs and arms. Follow the on-pack directions and patch test first.</p>" } },
+        "q4": { "type": "qa", "settings": { "question": "Do you deliver across the UAE?", "answer": "<p>Yes — we ship across the Emirates, with cash on delivery available.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4"],
+      "settings": {
+        "eyebrow": "Frequently asked questions",
+        "heading": "Good to know.",
+        "open_first": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "newsletter": {
+      "type": "gloeus-newsletter",
+      "settings": {
+        "eyebrow": "Gloeus Beauty Club",
+        "heading": "Join the Beauty Club.",
+        "subheading": "Get exclusive deals and beauty tips delivered to your inbox.",
+        "placeholder": "Your email address",
+        "button_label": "Subscribe",
+        "success_text": "Welcome to the club — check your inbox!",
+        "note": "🔒 No spam. Unsubscribe anytime.",
+        "show_petals": true,
+        "color_scheme": "scheme-2",
+        "padding_top": 72,
+        "padding_bottom": 72
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "benefits",
+    "how",
+    "feature",
+    "testimonials",
+    "offer",
+    "faq",
+    "newsletter"
   ]
 }

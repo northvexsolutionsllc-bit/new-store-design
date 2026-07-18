@@ -1,0 +1,191 @@
+/* ============================================================================
+   GLOEUS · Design tokens & brand type system
+   Loaded AFTER base.css so these overrides win. Brand-scoped with the g- prefix
+   to avoid collisions with Dawn's classes.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand palette ---- */
+  --g-blush: #f2a7bc;
+  --g-rose: #e4859b;
+  --g-rose-deep: #c96f86;
+  --g-petal-50: #fdf4f6;
+  --g-petal-100: #fbe9ee;
+  --g-champagne: #e8c9a0;
+  --g-ink: #1a1416;
+  --g-ink-60: #5a5052;
+  --g-paper: #fbf8f7;
+  --g-white: #ffffff;
+  --g-line: #efe2e6;
+
+  /* ---- Repoint Dawn's global type to the brand faces ---- */
+  --font-heading-family: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-heading-style: normal;
+  --font-heading-weight: 600;
+  --font-body-family: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body-style: normal;
+  --font-body-weight: 400;
+  --font-body-weight-bold: 600;
+
+  /* ---- Fluid type ramp (display uses Fraunces) ---- */
+  --g-display-1: clamp(2.9rem, 8vw, 6.4rem);
+  --g-display-2: clamp(2.3rem, 5.5vw, 4.2rem);
+  --g-h2: clamp(2rem, 4.4vw, 3.4rem);
+  --g-h3: clamp(1.4rem, 2.4vw, 1.9rem);
+  --g-lead: clamp(1.05rem, 1.7vw, 1.3rem);
+
+  /* ---- Space / form ---- */
+  --g-section-y: clamp(4rem, 10vw, 9rem);
+  --g-gap: clamp(1rem, 2.4vw, 2rem);
+  --g-radius: 18px;
+  --g-radius-lg: 28px;
+  --g-shadow: 0 24px 70px -34px rgba(201, 111, 134, 0.5);
+  --g-shadow-soft: 0 14px 44px -28px rgba(201, 111, 134, 0.45);
+
+  /* ---- Motion character (Snap default; Cinematic overrides per-section) ---- */
+  --g-ease: cubic-bezier(0.34, 1.3, 0.5, 1); /* snap: slight overshoot */
+  --g-ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
+  --g-ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+  --g-dur: 0.62s;
+  --g-dur-slow: 1.05s;
+}
+
+/* Headings use Fraunces with tight editorial leading */
+.h0, .h1, h1, .h2, h2, .h3, h3 {
+  font-family: var(--font-heading-family);
+  letter-spacing: -0.012em;
+}
+
+/* ---- Brand utility layer -------------------------------------------------- */
+.g-container {
+  width: 100%;
+  max-width: var(--page-width, 120rem);
+  margin-inline: auto;
+  padding-inline: clamp(1.1rem, 4vw, 3.5rem);
+}
+
+.g-eyebrow {
+  font-family: var(--font-body-family);
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 600;
+  /* Muted via color-alpha, NOT box opacity — keeps animated elements resting at opacity:1
+     so the stuck-reveal guard stays meaningful. */
+  color: rgba(var(--color-foreground, 26 20 22), 0.72);
+}
+
+.g-display {
+  font-family: var(--font-heading-family);
+  font-weight: 600;
+  font-size: var(--g-display-1);
+  line-height: 1.0;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+  margin: 0;
+}
+.g-display em { font-style: italic; font-weight: 400; }
+
+.g-h2 {
+  font-family: var(--font-heading-family);
+  font-weight: 600;
+  font-size: var(--g-h2);
+  line-height: 1.08;
+  letter-spacing: -0.014em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.g-lead {
+  font-size: var(--g-lead);
+  line-height: 1.6;
+  max-width: 46ch;
+}
+
+/* Pill buttons — brand rose, magnetic-ready */
+.g-btn {
+  --_bg: var(--g-ink);
+  --_fg: var(--g-paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.95rem 2rem;
+  border-radius: 999px;
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--font-body-family);
+  font-weight: 600;
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--g-dur) var(--g-ease), box-shadow var(--g-dur) var(--g-ease), background-color 0.25s ease;
+  will-change: transform;
+}
+.g-btn--rose { --_bg: var(--g-rose-deep); --_fg: #fff; }
+.g-btn--blush { --_bg: var(--g-blush); --_fg: var(--g-ink); }
+.g-btn--ghost {
+  --_bg: transparent;
+  --_fg: currentColor;
+  border: 1.5px solid currentColor;
+}
+.g-btn:hover { transform: translateY(-3px); box-shadow: var(--g-shadow-soft); }
+.g-btn:active { transform: translateY(-1px) scale(0.99); }
+
+/* Benefit / feature chips */
+.g-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(var(--color-foreground, 26 20 22), 0.05);
+  border: 1px solid rgba(var(--color-foreground, 26 20 22), 0.1);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.g-card {
+  background: rgb(var(--color-background, 251 248 247));
+  border: 1px solid rgba(var(--color-foreground, 26 20 22), 0.08);
+  border-radius: var(--g-radius);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  box-shadow: var(--g-shadow-soft);
+}
+
+/* Blush gradient field (radial-gradient glows — NO animated blur, Rule 5) */
+.g-field {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+.g-field::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 70%;
+  z-index: -1;
+  background:
+    radial-gradient(48rem 30rem at 82% 8%, var(--g-petal-100), transparent 62%),
+    radial-gradient(40rem 26rem at 4% 22%, rgba(242, 167, 188, 0.35), transparent 58%);
+  pointer-events: none;
+}
+
+/* Eyebrow index for sequenced sections (real sequences only) */
+.g-step-num {
+  font-family: var(--font-heading-family);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--g-rose-deep);
+  opacity: 0.35;
+}
+
+/* Section rhythm helper */
+.g-section { padding-block: var(--g-section-y); }
+
+/* Tabular figures where prices align */
+.g-price { font-variant-numeric: tabular-nums; }

@@ -7,8 +7,16 @@
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    {%- comment -%} Gloeus: mark JS alive BEFORE first paint so entrance hidden-states apply with no flash. If JS is off, the class never appears and all content renders normally. {%- endcomment -%}
+    <script>document.documentElement.classList.add('gloeus-js');</script>
+
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- else -%}
+      {%- comment -%} Gloeus: brand favicon generated from the logo monogram. {%- endcomment -%}
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ 'gloeus-favicon-32.png' | asset_url }}">
+      <link rel="icon" type="image/png" sizes="512x512" href="{{ 'gloeus-favicon-512.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'gloeus-favicon-180.png' | asset_url }}">
     {%- endif -%}
 
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
@@ -24,6 +32,9 @@
 
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
+    {% elsif request.page_type == 'index' %}
+      {%- comment -%} Gloeus: brand meta description fallback (store had none set). {%- endcomment -%}
+      <meta name="description" content="Gloeus — premium hair removal for smooth, soft, confidently hair-free skin. The OUHOE Hair Removal Spray leaves skin smooth in just 3–5 minutes. Pain-free, all skin types. Shipping across the UAE.">
     {% endif %}
 
     {% render 'meta-tags' %}
@@ -279,6 +290,23 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%} Gloeus brand layer: fonts, tokens, motion. Loaded after base.css so overrides win. {%- endcomment -%}
+    {%- render 'gloeus-fonts' -%}
+    {{ 'gloeus-tokens.css' | asset_url | stylesheet_tag }}
+    {{ 'gloeus-motion.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'gloeus-motion.js' | asset_url }}" defer="defer"></script>
+    <script>
+      /* Entrance fallback (Rule 2): if the motion engine never boots, release the gate at 1600ms. */
+      (function () {
+        setTimeout(function () {
+          if (!window.__boot) {
+            document.documentElement.classList.add('gloeus-in', 'gloeus-allin');
+          }
+        }, 1600);
+      })();
+    </script>
+
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}

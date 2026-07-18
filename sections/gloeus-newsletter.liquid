@@ -1,0 +1,75 @@
+{%- comment -%} GLOEUS · Beauty Club newsletter — native Shopify customer form. {%- endcomment -%}
+{{ 'gloeus-tokens.css' | asset_url | stylesheet_tag }}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="g-container g-section gloeus-nl" style="--pt:{{ section.settings.padding_top }}px;--pb:{{ section.settings.padding_bottom }}px;">
+    <div class="gloeus-nl__card g-field g-reveal g-scale">
+      {%- if section.settings.show_petals -%}<div class="g-petals" data-count="8" aria-hidden="true"></div>{%- endif -%}
+      {%- if section.settings.eyebrow != blank -%}<p class="g-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="g-h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}<p class="g-lead gloeus-nl__sub">{{ section.settings.subheading }}</p>{%- endif -%}
+
+      {%- form 'customer', id: 'gloeus-newsletter', class: 'gloeus-nl__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="gloeus-nl__success" role="status">{{ section.settings.success_text }}</p>
+        {%- else -%}
+          <div class="gloeus-nl__row">
+            <label class="visually-hidden" for="gloeus-nl-email">{{ 'newsletter.label' | t }}</label>
+            <input id="gloeus-nl-email" type="email" name="contact[email]" required
+                   placeholder="{{ section.settings.placeholder }}" autocomplete="email" class="gloeus-nl__input">
+            <button type="submit" class="g-btn g-btn--rose g-magnetic">{{ section.settings.button_label }}</button>
+          </div>
+          {%- if form.errors -%}
+            <p class="gloeus-nl__error" role="alert">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- if section.settings.note != blank -%}<p class="gloeus-nl__note">{{ section.settings.note }}</p>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} .g-section { padding-block: var(--pt) var(--pb); }
+  #shopify-section-{{ section.id }} .gloeus-nl__card {
+    position: relative; text-align: center; max-width: 46rem; margin-inline: auto;
+    padding: clamp(2.4rem, 6vw, 4rem); border-radius: var(--g-radius-lg);
+    background: rgb(var(--color-background, 251 248 247)); box-shadow: var(--g-shadow-soft);
+    display: grid; gap: 0.9rem; justify-items: center;
+  }
+  #shopify-section-{{ section.id }} .gloeus-nl__sub { margin: 0; }
+  #shopify-section-{{ section.id }} .gloeus-nl__form { width: 100%; max-width: 30rem; margin-top: 0.4rem; }
+  #shopify-section-{{ section.id }} .gloeus-nl__row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .gloeus-nl__input {
+    flex: 1 1 12rem; min-width: 0; padding: 0.9rem 1.2rem; border-radius: 999px; font: inherit;
+    border: 1.5px solid rgba(var(--color-foreground, 26 20 22), 0.16); background: rgb(var(--color-background, 251 248 247)); color: inherit;
+  }
+  #shopify-section-{{ section.id }} .gloeus-nl__input:focus-visible { outline: 2px solid var(--g-rose-deep); outline-offset: 1px; }
+  #shopify-section-{{ section.id }} .gloeus-nl__note { font-size: 0.8rem; opacity: 0.6; margin: 0.3rem 0 0; }
+  #shopify-section-{{ section.id }} .gloeus-nl__success { color: var(--g-rose-deep); font-weight: 600; }
+  #shopify-section-{{ section.id }} .gloeus-nl__error { color: #b3261e; font-size: 0.85rem; }
+</style>
+
+{% schema %}
+{
+  "name": "Gloeus Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Gloeus Beauty Club" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the Beauty Club." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Get exclusive deals and beauty tips delivered to your inbox." },
+    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "Your email address" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Subscribe" },
+    { "type": "text", "id": "success_text", "label": "Success message", "default": "Welcome to the club — check your inbox!" },
+    { "type": "text", "id": "note", "label": "Note", "default": "🔒 No spam. Unsubscribe anytime." },
+    { "type": "checkbox", "id": "show_petals", "label": "Petal drift", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-2" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "presets": [ { "name": "Gloeus Newsletter" } ]
+}
+{% endschema %}

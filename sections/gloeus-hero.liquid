@@ -1,0 +1,145 @@
+{%- comment -%}
+  GLOEUS · Hero — masked serif headline + floating product object + petal drift.
+  Entrance is gated by the single .gloeus-in authority (see gloeus-motion.*).
+{%- endcomment -%}
+{{ 'gloeus-tokens.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign img = section.settings.image
+  assign heading = section.settings.heading | default: 'Smooth skin, in minutes.'
+  assign cine = ''
+  if section.settings.motion == 'cinematic'
+    assign cine = ' g-cine'
+  endif
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient gloeus-hero-wrap">
+  <div class="gloeus-hero g-field" style="--pt:{{ section.settings.padding_top }}px;--pb:{{ section.settings.padding_bottom }}px;">
+    {%- if section.settings.show_petals -%}
+      <div class="g-petals" data-count="{{ section.settings.petal_count }}" aria-hidden="true"></div>
+    {%- endif -%}
+
+    <div class="g-container gloeus-hero__grid">
+      <div class="gloeus-hero__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="g-eyebrow g-enter g-up" style="--g-i:0">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h1 class="g-display gloeus-hero__title">
+          {%- assign lines = heading | newline_to_br | split: '<br />' -%}
+          {%- for line in lines -%}
+            <span class="g-mask"><span class="g-mask-i" style="--g-i:{{ forloop.index0 | plus: 1 }}">{{ line | strip }}</span></span>
+          {%- endfor -%}
+        </h1>
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="g-lead g-enter g-up" style="--g-i:{{ lines.size | plus: 2 }}">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+
+        <div class="gloeus-hero__cta g-enter g-up" style="--g-i:{{ lines.size | plus: 3 }}">
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link | default: '#' }}" class="g-btn g-btn--rose g-magnetic">{{ section.settings.button_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            <a href="{{ section.settings.button_link_2 | default: '#' }}" class="g-btn g-btn--ghost">{{ section.settings.button_label_2 }}</a>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.note != blank -%}
+          <p class="gloeus-hero__note g-enter g-up" style="--g-i:{{ lines.size | plus: 4 }}">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="gloeus-hero__media g-enter g-scale{{ cine }}" style="--g-i:2">
+        <div class="gloeus-hero__halo" aria-hidden="true"></div>
+        <div class="gloeus-hero__object" data-parallax="{{ section.settings.parallax_depth | divided_by: 100.0 }}">
+          <div class="g-bottle-float">
+            {%- if img != blank -%}
+              <img
+                src="{{ img | image_url: width: 1100 }}"
+                srcset="{{ img | image_url: width: 550 }} 550w, {{ img | image_url: width: 1100 }} 1100w"
+                sizes="(min-width: 990px) 44vw, 86vw"
+                width="{{ img.width }}" height="{{ img.height }}"
+                alt="{{ img.alt | escape | default: section.settings.heading | escape }}"
+                loading="eager" fetchpriority="high" class="gloeus-hero__img">
+            {%- else -%}
+              <img
+                src="{{ 'gloeus-product-hero.jpg' | asset_url }}"
+                width="1024" height="1024"
+                alt="{{ section.settings.heading | escape }}"
+                loading="eager" fetchpriority="high" class="gloeus-hero__img">
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {%- if section.settings.show_scroll_hint -%}
+      <div class="gloeus-hero__scroll g-enter g-up" style="--g-i:6" aria-hidden="true">
+        <span class="gloeus-hero__scroll-line"></span>{{ section.settings.scroll_label }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} .gloeus-hero { position: relative; padding-block: max(var(--pt), 4rem) var(--pb); }
+  #shopify-section-{{ section.id }} .gloeus-hero__grid {
+    display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center;
+    grid-template-columns: 1fr;
+  }
+  #shopify-section-{{ section.id }} .gloeus-hero__title { margin: 0.2em 0 0.4em; }
+  #shopify-section-{{ section.id }} .gloeus-hero__cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.6rem; }
+  #shopify-section-{{ section.id }} .gloeus-hero__note { margin-top: 1.1rem; font-size: 0.85rem; color: rgba(var(--color-foreground, 26 20 22), 0.62); }
+  #shopify-section-{{ section.id }} .gloeus-hero__media { position: relative; display: grid; place-items: center; }
+  #shopify-section-{{ section.id }} .gloeus-hero__object { position: relative; z-index: 1; width: min(80%, 30rem); }
+  #shopify-section-{{ section.id }} .gloeus-hero__img {
+    width: 100%; height: auto; display: block;
+    border-radius: 46% 54% 52% 48% / 54% 46% 54% 46%;
+    box-shadow: var(--g-shadow);
+  }
+  #shopify-section-{{ section.id }} .gloeus-hero__halo {
+    position: absolute; z-index: 0; width: 118%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle at 50% 46%, rgba(242,167,188,0.55), rgba(242,167,188,0) 62%);
+  }
+  #shopify-section-{{ section.id }} .gloeus-hero__scroll {
+    display: inline-flex; align-items: center; gap: 0.6rem; margin-top: clamp(2rem, 5vw, 3.4rem);
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(var(--color-foreground, 26 20 22), 0.6);
+  }
+  #shopify-section-{{ section.id }} .gloeus-hero__scroll-line { width: 46px; height: 1px; background: currentColor; display: inline-block; }
+  @media (min-width: 990px) {
+    #shopify-section-{{ section.id }} .gloeus-hero__grid { grid-template-columns: 1.05fr 0.95fr; }
+    #shopify-section-{{ section.id }} .gloeus-hero__media { order: 2; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Gloeus Hero",
+  "tag": "section",
+  "class": "gloeus-section-hero",
+  "settings": [
+    { "type": "select", "id": "motion", "label": "Motion intensity", "default": "cinematic",
+      "options": [ { "value": "snap", "label": "Snap" }, { "value": "cinematic", "label": "Cinematic" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Gloeus · UAE" },
+    { "type": "textarea", "id": "heading", "label": "Heading (one line per row for the masked reveal)", "default": "Smooth skin,\nin minutes." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Experience smooth, pain-free skin in just 3–5 minutes with the OUHOE Hair Removal Spray — no waxing, no razors, no pain." },
+    { "type": "image_picker", "id": "image", "label": "Product image", "info": "Defaults to the OUHOE product shot if empty." },
+    { "type": "range", "id": "parallax_depth", "label": "Parallax depth (%)", "min": 0, "max": 40, "step": 2, "default": 16 },
+    { "type": "text", "id": "button_label", "label": "Primary button", "default": "Shop OUHOE" },
+    { "type": "url", "id": "button_link", "label": "Primary link" },
+    { "type": "text", "id": "button_label_2", "label": "Secondary button", "default": "How it works" },
+    { "type": "url", "id": "button_link_2", "label": "Secondary link" },
+    { "type": "text", "id": "note", "label": "Small note", "default": "AED 39.99 · Free shipping across the UAE" },
+    { "type": "checkbox", "id": "show_petals", "label": "Petal drift", "default": true },
+    { "type": "range", "id": "petal_count", "label": "Petal count", "min": 4, "max": 24, "step": 2, "default": 12 },
+    { "type": "checkbox", "id": "show_scroll_hint", "label": "Show scroll hint", "default": true },
+    { "type": "text", "id": "scroll_label", "label": "Scroll label", "default": "Scroll" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "presets": [ { "name": "Gloeus Hero" } ]
+}
+{% endschema %}

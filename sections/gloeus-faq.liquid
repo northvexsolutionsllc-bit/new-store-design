@@ -1,0 +1,81 @@
+{%- comment -%} GLOEUS · FAQ — smooth grid-rows accordion (no blur, transform/opacity discipline). {%- endcomment -%}
+{{ 'gloeus-tokens.css' | asset_url | stylesheet_tag }}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="g-container g-section gloeus-faq" style="--pt:{{ section.settings.padding_top }}px;--pb:{{ section.settings.padding_bottom }}px;">
+    <header class="gloeus-faq__head g-reveal g-up">
+      {%- if section.settings.eyebrow != blank -%}<p class="g-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="g-h2">{{ section.settings.heading }}</h2>{%- endif -%}
+    </header>
+
+    <div class="gloeus-faq__list">
+      {%- for block in section.blocks -%}
+        <div class="gloeus-faq__item g-reveal g-up" style="--g-i:{{ forloop.index }}" {{ block.shopify_attributes }}>
+          <input type="checkbox" class="gloeus-faq__toggle visually-hidden" id="faq-{{ section.id }}-{{ forloop.index }}"{% if forloop.first and section.settings.open_first %} checked{% endif %}>
+          <label class="gloeus-faq__q" for="faq-{{ section.id }}-{{ forloop.index }}">
+            <span>{{ block.settings.question }}</span>
+            <span class="gloeus-faq__mark" aria-hidden="true"></span>
+          </label>
+          <div class="gloeus-faq__body"><div class="gloeus-faq__inner"><div class="gloeus-faq__a rte">{{ block.settings.answer }}</div></div></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} .g-section { padding-block: var(--pt) var(--pb); }
+  #shopify-section-{{ section.id }} .gloeus-faq__head { max-width: 46rem; margin-bottom: clamp(1.6rem, 4vw, 2.6rem); }
+  #shopify-section-{{ section.id }} .gloeus-faq__list { max-width: 52rem; margin-inline: auto; display: grid; gap: 0.7rem; }
+  #shopify-section-{{ section.id }} .gloeus-faq__item { border: 1px solid rgba(var(--color-foreground, 26 20 22), 0.12); border-radius: var(--g-radius); overflow: hidden; background: rgb(var(--color-background, 251 248 247)); }
+  #shopify-section-{{ section.id }} .gloeus-faq__q {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer;
+    padding: 1.1rem 1.4rem; font-family: var(--font-heading-family); font-size: var(--g-h3); font-weight: 600;
+  }
+  #shopify-section-{{ section.id }} .gloeus-faq__mark { position: relative; width: 16px; height: 16px; flex: 0 0 auto; }
+  #shopify-section-{{ section.id }} .gloeus-faq__mark::before,
+  #shopify-section-{{ section.id }} .gloeus-faq__mark::after { content: ""; position: absolute; inset: 50% 0 auto 0; height: 2px; background: var(--g-rose-deep); transform: translateY(-50%); transition: transform 0.3s var(--g-ease); }
+  #shopify-section-{{ section.id }} .gloeus-faq__mark::after { transform: translateY(-50%) rotate(90deg); }
+  #shopify-section-{{ section.id }} .gloeus-faq__toggle:checked ~ .gloeus-faq__q .gloeus-faq__mark::after { transform: translateY(-50%) rotate(0deg); }
+  #shopify-section-{{ section.id }} .gloeus-faq__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s var(--g-ease); }
+  #shopify-section-{{ section.id }} .gloeus-faq__toggle:checked ~ .gloeus-faq__body { grid-template-rows: 1fr; }
+  #shopify-section-{{ section.id }} .gloeus-faq__inner { overflow: hidden; }
+  #shopify-section-{{ section.id }} .gloeus-faq__a { padding: 0 1.4rem 1.3rem; opacity: 0.82; }
+  #shopify-section-{{ section.id }} .gloeus-faq__toggle:focus-visible ~ .gloeus-faq__q { outline: 2px solid var(--g-rose-deep); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .gloeus-faq__body { transition: none; }
+    #shopify-section-{{ section.id }} .gloeus-faq__mark::before,
+    #shopify-section-{{ section.id }} .gloeus-faq__mark::after { transition: none; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Gloeus FAQ",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Frequently asked questions" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Good to know." },
+    { "type": "checkbox", "id": "open_first", "label": "Open first item by default", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "label": "Top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    { "type": "qa", "name": "Question", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "Is it safe for sensitive skin?" },
+      { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>OUHOE is formulated to be gentle and is suitable for all skin types. As with any cosmetic product, we recommend a small patch test first.</p>" }
+    ] }
+  ],
+  "presets": [ {
+    "name": "Gloeus FAQ",
+    "blocks": [
+      { "type": "qa", "settings": { "question": "How long does it take to work?", "answer": "<p>Most areas are smooth in just 3–5 minutes. Apply evenly, wait, then wipe away.</p>" } },
+      { "type": "qa", "settings": { "question": "Is it painful?", "answer": "<p>No waxing and no razors — the spray is designed for a pain-free experience.</p>" } },
+      { "type": "qa", "settings": { "question": "Which areas can I use it on?", "answer": "<p>It's designed for common body areas such as legs and arms. Follow the on-pack directions and patch test first.</p>" } },
+      { "type": "qa", "settings": { "question": "Do you deliver across the UAE?", "answer": "<p>Yes — we ship across the Emirates, with cash on delivery available.</p>" } }
+    ]
+  } ]
+}
+{% endschema %}
