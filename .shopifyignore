@@ -1,0 +1,7 @@
+index.html
+preview/
+docs/
+vercel.json
+node_modules/
+.shopifyignore
+package-lock.json
