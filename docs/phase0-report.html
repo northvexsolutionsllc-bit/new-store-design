@@ -1,0 +1,247 @@
+<title>Gloeus · Phase 0 Report</title>
+<style>
+  :root{
+    --blush:#F2A7BC; --rose:#E4859B; --rose-deep:#C96F86;
+    --petal-50:#FDF4F6; --petal-100:#FBE9EE; --champagne:#E8C9A0;
+    --ink:#1A1416; --ink-60:#5A5052; --paper:#FBF8F7; --white:#fff;
+    --bg:var(--paper); --fg:var(--ink); --muted:var(--ink-60);
+    --card:#fff; --line:#efe2e6; --field:var(--petal-50);
+    --accent:var(--rose-deep); --accent-soft:var(--petal-100);
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Jost",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#171012;--fg:#F6ECEF;--muted:#b9a7ad;--card:#211619;
+      --line:#3a2a30;--field:#1f1417;--paper:#171012;--ink:#F6ECEF;
+      --accent:#F2A7BC;--accent-soft:#2a1a20;}
+  }
+  :root[data-theme="dark"]{--bg:#171012;--fg:#F6ECEF;--muted:#b9a7ad;--card:#211619;
+    --line:#3a2a30;--field:#1f1417;--ink:#F6ECEF;--accent:#F2A7BC;--accent-soft:#2a1a20;}
+  :root[data-theme="light"]{--bg:#FBF8F7;--fg:#1A1416;--muted:#5A5052;--card:#fff;
+    --line:#efe2e6;--field:#FDF4F6;--ink:#1A1416;--accent:#C96F86;--accent-soft:#FBE9EE;}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(60rem 40rem at 80% -10%,var(--accent-soft),transparent 60%),radial-gradient(50rem 30rem at -10% 10%,var(--accent-soft),transparent 55%);}
+  .wrap{max-width:76rem;margin:0 auto;padding:clamp(1.2rem,4vw,3rem)}
+  header.hd{padding:clamp(1.5rem,5vw,3.5rem) 0 1.5rem;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.02;
+    margin:.3em 0 .1em;letter-spacing:-.01em;text-wrap:balance}
+  h1 em{font-style:italic;color:var(--rose-deep)}
+  .sub{color:var(--muted);max-width:60ch;font-size:1.05rem}
+  .meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+  .pill{font-size:.78rem;padding:.32rem .8rem;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+  .pill.warn{border-color:#e6b8b8;background:#fff4f2;color:#9a3b3b}
+  @media (prefers-color-scheme:dark){.pill.warn{background:#2a1414;border-color:#5a2a2a;color:#f0b8b8}}
+
+  section{margin-top:clamp(2.4rem,6vw,4rem)}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.1;margin:0 0 .2em;letter-spacing:-.01em}
+  h2 .n{font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;color:var(--accent);vertical-align:middle;margin-right:.7rem;font-weight:600}
+  h3{font-size:1.02rem;margin:1.4rem 0 .4rem;letter-spacing:.01em}
+  p{margin:.5em 0}
+  a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(1.1rem,3vw,1.8rem);
+    box-shadow:0 20px 60px -30px rgba(201,111,134,.35)}
+  .grid{display:grid;gap:1rem}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
+
+  .callout{border-left:4px solid var(--rose-deep);background:var(--card);border-radius:0 14px 14px 0;
+    padding:1.1rem 1.3rem;margin:1rem 0}
+  .callout.alert{border-left-color:#c0392b}
+
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:.6rem 0}
+  .scroll{overflow-x:auto;border-radius:12px;border:1px solid var(--line)}
+  .scroll table{margin:0}
+  th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:var(--field);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  tbody tr:last-child td{border-bottom:none}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;background:var(--field);padding:.1em .4em;border-radius:6px}
+  .ok{color:#2e7d4f;font-weight:600}.no{color:#c0392b;font-weight:600}
+  @media (prefers-color-scheme:dark){.ok{color:#7fd1a1}.no{color:#f08d8d}}
+
+  .swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr));gap:.7rem}
+  .sw{border-radius:14px;border:1px solid var(--line);overflow:hidden;background:var(--card)}
+  .sw .chip{height:64px}
+  .sw .lab{padding:.5rem .7rem;font-size:.78rem}
+  .sw .lab b{display:block;font-size:.82rem}
+  .sw .lab span{color:var(--muted);font-family:ui-monospace,monospace;font-size:.72rem}
+
+  .typ{display:grid;gap:.9rem}
+  .typ .row{padding:1rem 1.2rem;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .typ .disp{font-family:var(--serif);font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.05}
+  .typ .disp em{font-style:italic;color:var(--rose-deep)}
+  .typ small{color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:.68rem}
+
+  ul.clean{margin:.4rem 0;padding-left:1.1rem}
+  ul.clean li{margin:.3em 0}
+  .foot{margin-top:3rem;padding:1.5rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+  .decisions .card{border-color:var(--rose)}
+  .badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.06em;padding:.2rem .55rem;border-radius:999px;background:var(--accent-soft);color:var(--accent);text-transform:uppercase}
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{animation:rise .7s cubic-bezier(.16,1,.3,1) both}
+    @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  }
+</style>
+
+<div class="wrap">
+  <header class="hd reveal">
+    <div class="eyebrow">Gloeus · Premium Redesign · Phase 0</div>
+    <h1>The direction, <em>before</em> a line of the build.</h1>
+    <p class="sub">A honest read of where gloeus.com stands, what the Petit reference actually does, the brand system derived from your logo, and a motion plan built to go heavier than Petit — presented for your veto before I build.</p>
+    <div class="meta">
+      <span class="pill">Base · Dawn 15.5.0 (forked ✓)</span>
+      <span class="pill">Market · UAE / AED</span>
+      <span class="pill">Single product · OUHOE</span>
+      <span class="pill warn">2 decisions block the build → §8</span>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="n">00</span>Environment reality check</h2>
+    <p class="sub">The one thing I won't do is pretend I saw something I didn't. This build environment sits behind an org egress proxy that blocks outbound web hosts — so parts of the brief's research had to be done differently. Here's exactly what worked and what didn't.</p>
+    <div class="scroll" style="margin-top:1rem">
+      <table>
+        <thead><tr><th>Target</th><th>How</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code>gloeus.com</code> + <code>/products.json</code></td><td>curl · WebFetch</td><td class="no">403 — blocked at proxy</td></tr>
+          <tr><td>Petit demo store</td><td>curl · WebFetch</td><td class="no">403 — blocked</td></tr>
+          <tr><td><code>shopify.dev</code> / <code>example.com</code> (control)</td><td>WebFetch</td><td class="no">403 — blanket block, not gloeus-specific</td></tr>
+          <tr><td><code>github.com/Shopify/dawn</code></td><td>git</td><td class="ok">✓ works — Dawn base cloned</td></tr>
+          <tr><td>Web search</td><td>WebSearch</td><td class="ok">✓ works (descriptions, not raw code)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout alert">
+      <strong>Two consequences, stated plainly.</strong>
+      <ul class="clean">
+        <li><b>I could not step through the live sites.</b> gloeus current-state below comes from your extraction doc + the 2 images; the Petit inventory is compiled from public docs, the Theme Store listing, Awwwards & reviews — labeled as such, not a live DOM teardown. The live FAQ / About / Contact bodies and <code>products.json</code> remain the one open gap.</li>
+        <li><b>The connected Shopify store is not gloeus.</b> The tool is authenticated to <code>iq1rda-r1.myshopify.com</code> — a trial store (PKR, Pakistan). I can build the theme as code here, but I <b>cannot push an unpublished theme to gloeus or hand you a preview link</b> from this session. No store data was touched.</li>
+      </ul>
+      Neither blocks the design. Both change delivery — see §8.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">01</span>gloeus.com — current state</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">The product</h3>
+        <ul class="clean">
+          <li><b>OUHOE Hair Removal Spray</b> — "Smooth Skin in Minutes"</li>
+          <li><b>AED 39.99</b> · "Save AED 25" (compare ≈ AED 64.99)</li>
+          <li>120 ML / 4 FL.OZ · single collection <code>all</code></li>
+          <li>4 benefits: Pain-Free · Fast (3–5 min) · Skin-Safe · Long-Lasting</li>
+          <li>How it works: Apply → Wait 3–5 min → Wipe</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Homepage stack (verbatim)</h3>
+        <ul class="clean">
+          <li>Hero → Why Women Love OUHOE → How It Works</li>
+          <li>Best-seller feature → 3 testimonials (Dubai / Abu Dhabi / Sharjah)</li>
+          <li>Limited offer → FAQ → Beauty Club → support/footer</li>
+        </ul>
+        <p style="margin:.6rem 0 0;color:var(--muted);font-size:.86rem">Fix list: no meta description · WhatsApp-named favicon · no motion system · FAQ trapped client-side.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">02</span>Brand system — derived from the logo</h2>
+    <p class="sub">The palette is anchored to the brief's blush and the logo's high-contrast serif ink, extended into a workable set of fields, accents and one champagne sparkle pulled from the product shot's glitter.</p>
+    <div class="swatches" style="margin-top:1.1rem">
+      <div class="sw"><div class="chip" style="background:#F2A7BC"></div><div class="lab"><b>Blush</b><span>#F2A7BC</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E4859B"></div><div class="lab"><b>Rose</b><span>#E4859B</span></div></div>
+      <div class="sw"><div class="chip" style="background:#C96F86"></div><div class="lab"><b>Rose Deep</b><span>#C96F86</span></div></div>
+      <div class="sw"><div class="chip" style="background:#FBE9EE"></div><div class="lab"><b>Petal Field</b><span>#FBE9EE</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E8C9A0"></div><div class="lab"><b>Champagne</b><span>#E8C9A0</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1A1416"></div><div class="lab"><b>Warm Ink</b><span>#1A1416</span></div></div>
+      <div class="sw"><div class="chip" style="background:#FBF8F7;border-bottom:1px solid #eee"></div><div class="lab"><b>Paper</b><span>#FBF8F7</span></div></div>
+    </div>
+
+    <h3>Type direction</h3>
+    <div class="typ">
+      <div class="row">
+        <small>Display · Cormorant Garamond (proposed) — logo-adjacent serif</small>
+        <div class="disp">Smooth skin, <em>in minutes.</em></div>
+      </div>
+      <div class="row">
+        <small>Body / UI · Jost — clean humanist sans</small>
+        <div style="font-family:var(--sans);font-size:1.05rem">Pain-free, fast, gentle on all skin types — trusted by women across the UAE. Generous whitespace, silky editorial pacing, blush gradient fields.</div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:.84rem;margin-top:.6rem">Display/body shown here in system-serif/sans fallback (font CDNs are blocked in this report sandbox); the theme itself loads Cormorant Garamond + Jost from Shopify's hosted font library with <code>font-display:swap</code>.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">03</span>Petit inventory → our motion, one level heavier</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">What Petit does <span class="badge">the floor</span></h3>
+        <ul class="clean">
+          <li>Parallax scroll sections (layered depth)</li>
+          <li>Product slider — per-item animated backgrounds</li>
+          <li>Scroll-synced flowing text reveals</li>
+          <li>Before/after slider, image rollover, zoom, hotspots</li>
+          <li>Sticky cart + sticky Buy button, inline variants</li>
+          <li>Multi-tab blocks, comparison table, press strip, countdown</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:var(--rose)">
+        <h3 style="margin-top:0">What we add on top <span class="badge">heavier</span></h3>
+        <ul class="clean">
+          <li>Masked serif headline reveal + per-line stagger</li>
+          <li>Floating cut-out bottle — parallax + gentle rotation on scroll</li>
+          <li>Petal-drift particle field (low density, tasteful)</li>
+          <li><b>Scroll-scrubbed, pinned How-It-Works</b> (Apply→Wait→Wipe)</li>
+          <li>Marquee testimonial strip · magnetic button micro-interactions</li>
+          <li>Cart-drawer slide + item micro-transitions (logic untouched)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">04</span>The engineering spine — 8 non-negotiables honored</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Rule</th><th>How it's enforced</th></tr></thead>
+        <tbody>
+          <tr><td>No <code>@view-transition</code></td><td>Grep-gated to zero — avoids the iOS entrance re-fire bug</td></tr>
+          <tr><td>One entrance gate, one authority</td><td>Single body class · double-rAF after theme JS · font grace ≤350ms · <code>window.__boot</code> + 1600ms inline fallback · re-armed on <code>shopify:section:load/select</code></td></tr>
+          <tr><td>Hidden states scoped</td><td>Every JS-gated state under <code>:where(html.js)</code> — no specificity trap</td></tr>
+          <tr><td>Viewport in JS</td><td><code>svh</code> (feature-detected) + <code>documentElement.clientHeight</code>; never <code>innerHeight</code>/"vh" strings — grep-gated</td></tr>
+          <tr><td>Blur discipline</td><td>Glows via radial-gradients; no animated blur/backdrop-filter on content; opacity+transform only</td></tr>
+          <tr><td>Touch parity</td><td><code>@media (hover:none)</code> neutralizes hover-only; identical entrance every visit/platform</td></tr>
+          <tr><td>Reduced motion</td><td>Full content readable; motion collapses to fades/none</td></tr>
+          <tr><td>Perf budget</td><td>Lighthouse mobile ≥85; zero layout shift; lazy below-fold; Shopify fingerprinting respected</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="decisions">
+    <h2><span class="n">08</span>Decisions needed — the approval gate</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">A · Live-data gap</h3>
+        <p>gloeus.com is unreachable here. Either <b>you paste</b> the live FAQ Q&As, About/Contact bodies and <code>products.json</code> (recommended), or I build with extraction copy + clearly-marked placeholders you fill in the editor.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">B · Delivery target</h3>
+        <p>Connected store isn't gloeus. Recommended: deliver as <b>code + draft PR</b>, then push to gloeus as an <b>unpublished</b> theme once the gloeus store is connected (or you run the CLI). Nothing goes live without you.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">C · Direction sign-off</h3>
+        <p>Approve the <b>palette</b>, the <b>Cormorant + Jost</b> pairing, and the <b>motion set</b> — or redirect now, before I build the animation layer and sections.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>Done so far:</b> Dawn 15.5.0 forked into the repo (55 sections · 39 snippets · 191 assets) · brand assets placed · extraction archived. Build paused at this gate per the brief. · <em>Gloeus — premium hair-removal, smooth · soft · confidently hair-free.</em>
+  </div>
+</div>
